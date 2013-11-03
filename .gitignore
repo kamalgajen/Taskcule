@@ -1,0 +1,22 @@
+# Mac
+.DS_Store
+
+# Emacs
+*~
+
+# contains passwords, and security keys.  rename constants.js.sample to add your 
+# own values
+constants.js
+
+# npm packages - uncomment the below line "node_modules" if you want to 
+# install the dependencies on your own using package.json.  I am uploading 
+# these to git for 2 reasons - deployment time and minor change in everyauth
+# module. If you are not using the node_modules uploaded in github, please make
+# this below change in everyauth module - remove the below line from everyauth 
+# module - google.js
+# approval_prompt: 'force'
+# this avoid a confirmation page everytime during log in
+# node_modules
+
+# TODO: uncomment at completion of this script
+setup-taskcule.sh

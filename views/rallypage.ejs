@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+
+  <head>
+    <title>Task Tracker</title>
+    
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <meta name="description" content="Track your ToDo's, iteration stories and tasks in a single app">
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.1.5/angular.min.js" ></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui/0.4.0/angular-ui.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min.js"></script>
+    <script src="http://crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/aes.js"></script>
+    <script src="js/xeditable.min.js"></script>
+
+    <script src="js/main.js"></script>
+    <script src="js/services.js"></script>
+    <script src="js/filters.js"></script>
+    <script src="js/controllers.js"></script>
+
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/3.0.2/css/font-awesome.css">
+    <link rel="stylesheet" href="css/taskcule.css">
+    <link rel="stylesheet" href="css/xeditable.css">
+  </head>
+
+<body>
+
+    <!-- Mobile-friendly navbar adapted from example. -->
+    <!-- http://twitter.github.io/bootstrap/examples/starter-template.html -->
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="home"><%= product_name %></a>
+        </div>
+        <div class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="home">Home</a></li>
+            <li><a href="tasks">Tasks</a></li>
+            <li class="active"><a href="rally">Rally</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+
+    <div ng-controller="RallyRegistrationCtrl" class="container-fluid">
+        <div class="row-fluid heading">
+                <h1><i>Rally</i></h1>
+                <br>
+        </div>
+
+        <!-- this section is not required.  The rally user login
+        can be obtained from Rally via web service call after a 
+        user has logged in to to the site directly -->
+        <!--
+        <form name="form" novalidate class="css-form">
+        <div ng-if="!newuser" class="row-fluid">
+            <div class="col-md-2"></div>
+            <input type="email"
+                name="rallyuser"
+                ng-model="rally.user"
+                class="col-md-6" 
+                placeholder="Enter your rally user name"
+                readonly="readonly"
+                >
+            <div class="col-md-4">
+                <button name='btnactive' type="submit" 
+                    class="btn btn-primary icon-small"
+                    ng-disabled="form.$invalid"
+                    ng-click="deleteRallyUser();">
+                    Change Rally user in <%= product_name %>
+                </button>
+            </div>
+        </div>
+        <div ng-if="newuser" class="row-fluid">
+            <div class="col-md-2"></div>
+            <input type="email"
+                name="rallyuser"
+                ng-model="rally.user"
+                class="col-md-6" 
+                placeholder="Enter your rally user name"
+                autofocus
+                required>
+            <div class="col-md-4">
+                <button name='btnactive' type="submit" 
+                    class="btn btn-primary icon-small"
+                    ng-disabled="form.$invalid"
+                    ng-click="saveRallyUser();">
+                    Register Rally user with <%= product_name %>
+                </button>
+            </div>
+        </div>
+        </form>
+        -->
+
+        <form name="form" novalidate class="css-form">
+        <div class="row-fluid heading"
+                ng-show="!requestRallyLogin" >
+            <button name='btnactive' type="submit" 
+                class="btn btn-primary icon-small"
+                ng-click="requestRallyLogin=true;">
+                Change Rally Account Details
+            </button>
+        </div>
+        <div class="row-fluid" ng-show="requestRallyLogin">
+            <div class="col-md-1"></div>
+            <input type="email" class="col-md-3"
+                name="rallyuser" ng-model="rallyuser"
+                placeholder="Enter your rally user name"
+                autofocus required
+            >
+            <div class="col-md-1"></div>
+            <input type="password" class="col-md-3"
+                name="rallypwd" ng-model="rallypwd"
+                placeholder="Enter your rally password"
+                required
+            >
+            <div class="col-md-1"></div>
+            <div class="col-md-2">
+                <button name='btnactive' type="submit" 
+                    class="btn btn-primary icon-small"
+                    ng-disabled="form.$invalid"
+                    ng-click="validaccount=true; saveRallyLogin(rallyuser, rallypwd);">
+                    Register Rally user with <%= product_name %>
+                </button>
+            </div>
+            <div class="col-md-1"></div>
+        </div>
+
+        <div class="clearfix"></div>
+        <div ng-show="!validaccount" class="row-fluid heading">
+            <br>Rally login credential not valid.  Please try again.
+        </div>
+        </form>
+    </div>
+
+    <br>
+
+    <!-- a sepearate controller to control the view/edit of rally tasks -->
+    <div ng-controller="RallyCtrl" ng-show="!requestRallyLogin"
+        class="container-fluid">
+        <div ng-if="error">
+            {{error}}
+        </div>
+        <div ng-if="!error">
+            <div ng-model="rallytasks" class="table-responsive">
+                <table class="table table-hover">
+                    <tr style="font-weight: bold;">
+                      <td>Task Name</td>
+                      <td>Iteration</td>
+                      <td>State</td>
+                      <td>Estimate</td>
+                      <td>To Do</td>
+                      <td>Actuals</td>
+                    </tr>
+                    <tr ng-repeat="task in rallytasks">
+                        <td style="word-wrap:break-word; width:30%" editable-text="task.Name"
+                            onbeforesave="updateRallyTasks(task._ref, 'Name', $data);" >
+                            {{task.Name}}
+                        </td>
+                        <td ng-model="task.Iteration">{{task.Iteration.Name}}</td>
+                        <td editable-select="task.State" 
+                            onbeforesave="updateRallyTasks(task._ref, 'State', $data);"
+                            e-ng-options="s.value as s.text for s in states">
+                            {{showState(task)}}
+                        </td>
+                        <td editable-number="task.Estimate"
+                            onbeforesave="updateRallyTasks(task._ref, 'Estimate', $data);" >
+                            {{task.Estimate}}
+                        </td>
+                        <td editable-number="task.ToDo"
+                            onbeforesave="updateRallyTasks(task._ref, 'ToDo', $data);" >
+                            {{task.ToDo}}
+                        </td>
+                        <td editable-number="task.Actuals"
+                            onbeforesave="updateRallyTasks(task._ref, 'Actuals', $data);" >
+                            {{task.Actuals}}
+                        </td>
+                    </tr>
+                    <!-- empty row to clean up a loo & feel issue in xeditable -->
+                    <tr class="active"><td colspan=6></td></tr>
+                </table>
+                <!--<button ng-click="updateRallyTasks();">aa</button>-->
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

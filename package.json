@@ -1,0 +1,23 @@
+{
+  "name": "Taskcule",
+  "version": "0.0.4",
+  "description": "Integrated Work Load Management Tool For Professionals",
+  "main": "web.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "ejs": "~0.8.4",
+    "express": "~3.3.4",
+    "everyauth": "~0.4.5",
+    "async": "~0.2.9",
+    "node-thrift": "~1.0.0-dev",
+    "thrift": "~0.9.1",
+    "request": "~2.27.0",
+    "underscore": "~1.5.1"
+  },
+  "engines": {
+    "node": "0.10.12",
+    "npm": "1.2.30"
+  }
+}
