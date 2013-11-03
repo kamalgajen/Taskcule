@@ -9,19 +9,18 @@ Copy Constants.js.sample to Constants.js and update the apropriate values
 
 Hbase:
 Start the hbase and thrift servers, and create required tables
-> cd <HBASE INSTALL DIRECTORY>
-> bin/start-hbase.sh
-> bin/hbase thrift start
-> bin/hbase shell
-    create 'todo', 'cf'
-    exit
->
 
+    cd <HBASE INSTALL DIRECTORY>
+    bin/start-hbase.sh
+    bin/hbase thrift start
+    bin/hbase shell
+        create 'todo', 'cf'
+        exit
 
 Start server:
-### heroku > git push heroku master
-### heroku > heroku config:push
-> foreman start
+<!-- heroku > git push heroku master 
+### heroku > heroku config:push -->
+    foreman start
 
 
 ###############################################################################
