@@ -17,6 +17,14 @@ var Constants = {
   // session secret string for security.  You can use this default below
   SESSION_SECRET: "ThisCanBeAnyString",
 
+  // Social: addthis url (if you want to social-ize your site)
+  SOCIAL_ADDTHIS_URL: "//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-xxxxxxxxxx",
+
+
+  // Google analytics
+  GOOGLE_ANALYTICS_DOMAIN: "tascule.com",
+  GOOGLE_ANALYTICS_TRACKING_ID: "UA-xxxxxxxx",
+
 };
 
 module.exports = Constants;

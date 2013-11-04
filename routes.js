@@ -32,7 +32,10 @@ var indexfn = function(request, response) {
       title: Constants.PRODUCT_NAME,
       product_name: Constants.PRODUCT_NAME,
       product_desc: Constants.PRODUCT_DESCRIPTION,
-      product_short_desc: Constants.PRODUCT_SHORT_DESCRIPTION
+      product_short_desc: Constants.PRODUCT_SHORT_DESCRIPTION,
+      addthis_url: Constants.SOCIAL_ADDTHIS_URL,
+      ga_domain: Constants.GOOGLE_ANALYTICS_DOMAIN,
+      ga_tracking_id: Constants.GOOGLE_ANALYTICS_TRACKING_ID
     });
 };
 
