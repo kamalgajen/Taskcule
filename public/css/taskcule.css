@@ -24,7 +24,7 @@
 /* Large desktop */
 @media (min-width: 980px) { 
   body {
-   padding-top: 60px;
+   padding-top: 50px;
   }
  .linediv-l {
    border-right: 1px white solid;
@@ -35,9 +35,9 @@
 }
 
 /* Landscape phones and down */
-@media (max-width: 480px) { 
- .copy {
-   padding: 2.5% 10%;
+@media (max-width: 480px) {
+ body {
+   padding-top: 50px;
  }
  .linediv-l {
    border-bottom: 1px white solid;
@@ -68,7 +68,7 @@ body{
   font-weight: 300;
 }
 p.lead {
-  padding-top: 1.5%;
+  padding-top: 1%;
   font-size: 24px;
   line-height: 30px;
 }
@@ -77,45 +77,18 @@ p {
   line-height: 24px;
 }
 
-/* Video pitch and Action */
-.pitch {
-  padding: 2.5% 0%;
-}
-.order {
-  padding: 2% 0%;
-}
-.actions {
-  background-color: #343434;
-  padding: 3% 0%;
-}
-.video, .thermometer, .order, .social, .statistics {
-  text-align: center;
-}
-.statistics h3, .statistics p {
-  color: white;
-}
-.statistics p .currency {
-  font-size: 100%;
-  line-height: 1;
-}
-
 .aligncenter {
   text-align: center;
 }
 
-/* Marketing Copy and Footer */
-.copy {
-  padding-top: 2.5%;
-  padding-bottom: 2.5%;
-  text-align: justify;
-}
-.asset {
-  padding: 2.5% 0%;
-}
-.footer {
+.footer1 {
   position: fixed;
   bottom: 2%;
   width: 100%;
+  color: #cccccc;
+  text-align: center;
+}
+.footer {
   color: #cccccc;
   text-align: center;
 }
@@ -130,18 +103,12 @@ p {
 
 .input {
   background-color: #F2E9EB;
-  /*height: 40px;
-  font-size: 20px;
-  line-height: 20px;*/
 }
 
 .tasklist {
 }
 
 .editable-todos {
-/*  padding-top: 1%;
-  padding-bottom: 1%;
-*/
   border: none;
 }
 
@@ -202,8 +169,8 @@ ul.lineitem {
 
 /* http://support.addthis.com/customer/portal/questions/1136093-share-buttons-in-center-position */      
 div.addthis_toolbox {
-width: 250px;
-margin: 0 auto;
+  width: 210px;
+  margin: 0 auto;
 }
 
 .loginbuttons {
@@ -214,5 +181,7 @@ margin: 0 auto;
 .homepagebutton {
     width:250px;
 }
-
+.verticalpadding {
+  padding: 2.5% 0%;
+}
 
