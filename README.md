@@ -8,7 +8,7 @@ Properties:
 Copy Constants.js.sample to Constants.js and update the apropriate values
 
 Hbase:
-Start the hbase and thrift servers, and create required tables
+If you are using Hadoop, run "bin/start-all.sh" to get all the hadoop related processes started.  Start the hbase and thrift servers, and create required tables
 
     cd <HBASE INSTALL DIRECTORY>
     bin/start-hbase.sh
@@ -68,5 +68,4 @@ with each REST calls to Rally.
 Bugzilla: TO BE DONE
 
 Github: TO BE DONE
-
 

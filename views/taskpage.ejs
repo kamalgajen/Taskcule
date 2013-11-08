@@ -65,7 +65,7 @@
 			<div class="col-xs-2"></div>
       			<input type="text"
             ng-model="newtask"
-      			class="new-todo input col-xs-8" 
+      			class="new-todo col-xs-8" 
             placeholder="Add a task"
             ui-keypress="{enter: 'addtask()'}"
       			autofocus>
@@ -75,7 +75,31 @@
   
   <br>
 
-	<div ng-model="tasks" class="container tasklist">
+  <div class="container">
+    <div class="row">     
+      <div class="aligncenter col-xs-12">
+        <button name='btnactive' type="submit" 
+                class="btn btn-primary icon-small" 
+                ng-click="viewOption='active'; fmtButton('btnactive');"
+                >
+          Active
+        </button>
+        <button name='btnall' type="submit" 
+                class="btn icon-small" 
+                ng-click="viewOption='all'; fmtButton('btnall');">
+          All
+        </button>
+        <button name='btncompleted' ype="submit" 
+                class="btn icon-small" 
+                ng-click="viewOption='completed'; fmtButton('btncompleted');">
+          Completed
+        </button>
+    </div>  
+  </div>
+
+  <br>
+
+	<div ng-model="tasks" class="container">
 		<ul class="lineitem">
 			<li ng-repeat="task in tasks | statusFilter:viewOption">
 				<div class="row">			
@@ -120,28 +144,6 @@
   			</li>
 		</ul>
  
-  </div>  
-
-  <div class="container">
-    <div class="row">     
-      <div class="footer1 col-xs-12">
-        <button name='btnactive' type="submit" 
-                class="btn btn-primary icon-small" 
-                ng-click="viewOption='active'; fmtButton('btnactive');"
-                >
-          Active
-        </button>
-        <button name='btnall' type="submit" 
-                class="btn icon-small" 
-                ng-click="viewOption='all'; fmtButton('btnall');">
-          All
-        </button>
-        <button name='btncompleted' ype="submit" 
-                class="btn icon-small" 
-                ng-click="viewOption='completed'; fmtButton('btncompleted');">
-          Completed
-        </button>
-    </div>  
   </div>
 
   </body>

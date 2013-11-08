@@ -81,13 +81,6 @@ p {
   text-align: center;
 }
 
-.footer1 {
-  position: fixed;
-  bottom: 2%;
-  width: 100%;
-  color: #cccccc;
-  text-align: center;
-}
 .footer {
   color: #cccccc;
   text-align: center;
@@ -99,13 +92,8 @@ p {
   color: #ccccff;
 }
 
-
-
-.input {
+.new-todo {
   background-color: #F2E9EB;
-}
-
-.tasklist {
 }
 
 .editable-todos {
@@ -119,9 +107,6 @@ p {
 
 .hideborder {
     border: none;
-}
-
-.new-todo {
 }
 
 .toggle {
