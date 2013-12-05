@@ -2,13 +2,28 @@
 SETUP:
 ###############################################################################
 
-Install Hbase, with or without Hadoop.
+Software Intall:
+node
+npm
+Hadoop (Optional: only required if running Hbase in distributed cluster mode)
+Hbase 
 
 Properties:
 Copy Constants.js.sample to Constants.js and update the apropriate values
 
-Hbase:
-If you are using Hadoop, run "bin/start-all.sh" to get all the hadoop related processes started.  Start the hbase and thrift servers, and create required tables
+Configure Hadoop (Optional):
+Configure hadoop appropriately.  Remember to update the config files and run namenode format.  
+NOTE: this step is required only if you want to run Taskcule in distributed mode.
+
+Configure Hbase:
+You can run hbase locally or in a hadoop cluster.  To run hbase locally, just change the hbase.rootdir in hbase-site.xml to a data drive.  That's the only change that's required.  Refer to http://hbase.apache.org/book/quickstart.html for further details.  To run hbase in a distributed, set the hbase.rootdir to your hdfs directory for hbase data, hbase.cluster.distributed to true, hbase.zookeeper.quorum to localhost and hbase.zookeeper.property.dataDir to a hdfs directory for zookeeper files.  Refer to http://hbase.apache.org/book/standalone_dist.html for further details.
+
+Start servers:
+If you are using Hadoop, run "bin/start-all.sh" to get all the hadoop related processes started - 
+   cd <HADOOP INSTALL DIRECTORY>
+   bin/start_all.sh
+
+Start the hbase and thrift servers, and create required tables - 
 
     cd <HBASE INSTALL DIRECTORY>
     bin/start-hbase.sh
