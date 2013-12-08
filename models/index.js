@@ -5,8 +5,8 @@ var Constants = require('../constants');
 if (!global.hasOwnProperty('hbase')) {
 
    var thrift = require('thrift'),
-    HBase = require('../public/js/gen-nodejs/HBase.js'),
-    HBaseTypes = require('../public/js/gen-nodejs/HBase_types.js'),
+    HBase = require('../public/js/gen-nodejs/Hbase.js'),
+    HBaseTypes = require('../public/js/gen-nodejs/Hbase_types.js'),
 
     connection = thrift.createConnection(Constants.HBASE_THRIFT_SERVER_NAME, 
                                             Constants.HBASE_THRIFT_SERVER_PORT, {

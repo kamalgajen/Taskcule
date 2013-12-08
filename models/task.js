@@ -6,8 +6,8 @@ var db = require('./index');
 
 // using thrift to connect to hbase from nodejs.  This has tested to be 
 // much more efficient than using hbase native REST API
-var HBase = require('../public/js/gen-nodejs/HBase.js');
-var HBaseTypes = require('../public/js/gen-nodejs/HBase_types.js');
+var HBase = require('../public/js/gen-nodejs/Hbase.js');
+var HBaseTypes = require('../public/js/gen-nodejs/Hbase_types.js');
 
 
 // get tasks from hbase 'todo' table.  An entire task list is stored 

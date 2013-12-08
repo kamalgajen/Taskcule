@@ -4,8 +4,8 @@ var request = require('request');
 var uu = require('underscore');
 var db = require('./index');
 
-var HBase = require('../public/js/gen-nodejs/HBase.js');
-var HBaseTypes = require('../public/js/gen-nodejs/HBase_types.js');
+var HBase = require('../public/js/gen-nodejs/Hbase.js');
+var HBaseTypes = require('../public/js/gen-nodejs/Hbase_types.js');
 
 // rally user management in taskcule
 // NOTE: this is not currently used, as the user is stored in the user's 
