@@ -12,6 +12,8 @@ angular.module('myApp.controllers',[]).
   controller('TaskCtrl', ['$http', '$scope', '$timeout', '$rootScope', 'taskService', 
     function($http, $scope,  $timeout, $rootScope, taskService) {
 
+  console.log("inside taskctrl");
+
   // call the server api to fetch tasks from the hbase data store
   // the tasks is stored as a blob with the users email address as the key
   $http.get('/api/tasks').success(function(data, status, headers, config) {

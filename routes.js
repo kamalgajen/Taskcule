@@ -93,7 +93,11 @@ var api_post_tasksfn = function(request, response) {
 var tasksfn = function(request, response) {
     authenticate(request, response);
 
+    console.log ("inside taskfn in router");
+
     response.render("taskpage", {
+      title: Constants.PRODUCT_NAME,
+      product_desc: Constants.PRODUCT_DESCRIPTION,
       product_name: Constants.PRODUCT_NAME
     });
 };
@@ -106,6 +110,8 @@ var rallyfn = function(request, response) {
     authenticate(request, response);
 
     response.render("rallypage", {
+      title: Constants.PRODUCT_NAME,
+      product_desc: Constants.PRODUCT_DESCRIPTION,
       product_name: Constants.PRODUCT_NAME
     });
 };
