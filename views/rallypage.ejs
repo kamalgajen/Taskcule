@@ -52,7 +52,7 @@
       </div>
     </div>
 
-    <div ng-controller="RallyRegistrationCtrl" class="container-fluid">
+    <div ng-controller="RallyRegistrationCtrl" class="container">
         <div class="row-fluid heading">
                 <h1>Rally</h1>
                 <br>
@@ -113,17 +113,19 @@
         </div>
         <div class="row-fluid" ng-show="requestRallyLogin">
             <div class="col-md-1"></div>
-            <input type="email" class="col-md-3"
+            <input type="email" class="col-md-3 col-xs-12"
                 name="rallyuser" ng-model="rallyuser"
                 placeholder="Enter your rally user name"
                 autofocus required
             >
+
             <div class="col-md-1"></div>
-            <input type="password" class="col-md-3"
+            <input type="password" class="col-md-3 col-xs-12"
                 name="rallypwd" ng-model="rallypwd"
                 placeholder="Enter your rally password"
                 required
             >
+
             <div class="col-md-1"></div>
             <div class="col-md-2">
                 <button name='btnactive' type="submit" 
