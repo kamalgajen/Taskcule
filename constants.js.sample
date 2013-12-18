@@ -10,9 +10,15 @@ var Constants = {
   PRODUCT_SHORT_DESCRIPTION: "Integrated Work Load Management Tool For Professionals",
   PRODUCT_DESCRIPTION: "Track your ToDo's, iteration stories and tasks in a single app", 
 
-  // google app id and app secret - please fill in these two to support login via google
+  // google app id and app secret - register your application and fill in 
+  // these two to support login via google oauth
   EVERYAUTH_GOOGLE_APPID: "xxx.apps.googleusercontent.com",
   EVERYAUTH_GOOGLE_APPSECRET: "xxxxxxxxxx",
+
+  // github client id and app secret - register your application and fill in 
+  // these to support github oauth login
+  EVERYAUTH_GITHUB_APPID: "xxxxxxxxx",
+  EVERYAUTH_GITHUB_APPSECRET: "xxxxxxxxxxxxxx",
 
   // session secret string for security.  You can use this default below
   SESSION_SECRET: "ThisCanBeAnyString",

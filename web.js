@@ -9,10 +9,8 @@ var express = require('express')
 
 /*
   Initialize the Express app, the E in the MEAN stack (from mean.io).
-
-  setup authentication using everyauth, and currently configured with google, but 
+  setup authentication using everyauth, and currently configured with google, but
   can be extended to other sites supporting oauth2.
-
   load the routes, and start the server on the designated port
 */
 var app = express();
@@ -30,6 +28,7 @@ app.use(express.session({secret: Constants.SESSION_SECRET}));
 
 var usersById = {};
 var usersByGoogleId = {};
+var usersByGithubId = {};
 
 // function creates a user object and returns it to the caller, meanwhile also
 // keeping track in a global hash
@@ -62,14 +61,36 @@ everyauth.google
     res.redirect('/login');
   })
   .findOrCreateUser( function (session, accessToken, accessTokenExtra, googleUserMetadata) {
-    console.log("Authentication successful");
+    console.log("Google authentication successful");
     googleUserMetadata.refreshToken = accessTokenExtra.refresh_token;
     googleUserMetadata.expiresIn = accessTokenExtra.expires_in;
-    console.log(googleUserMetadata.id, googleUserMetadata.email, googleUserMetadata);
+    //console.log(googleUserMetadata.id, googleUserMetadata.email, googleUserMetadata);
     return usersByGoogleId[googleUserMetadata.id] || 
       (usersByGoogleId[googleUserMetadata.id] = addUser('google', googleUserMetadata));
   })
   .redirectPath('/home');
+
+// github authentication
+everyauth.github
+  .appId(Constants.EVERYAUTH_GITHUB_APPID)
+  .appSecret(Constants.EVERYAUTH_GITHUB_APPSECRET)
+  .scope('user:email repo:status')
+  .entryPath('/auth/github')
+  .callbackPath('/auth/github/callback')
+  .handleAuthCallbackError( function (req, res) {
+    res.redirect('/login');
+  })
+  .findOrCreateUser( function (sess, accessToken, accessTokenExtra, githubUser) {
+      console.log("Github authentication successful");
+      //console.log(sess, accessToken, accessTokenExtra, githubUser);
+      // the git user is null in some/all? cases, even though I am request access
+      // to the email address.  So, creating a unique email, since this is the 
+      // key in our data store
+      githubUser.email = githubUser.login + "_github";
+      return usersByGithubId[githubUser.id] || (usersByGithubId[githubUser.id] = addUser('github', githubUser));
+  })
+  .redirectPath('/home');
+
 app.use(everyauth.middleware());
 
 // direct get and post requests - see routes.js for more details
