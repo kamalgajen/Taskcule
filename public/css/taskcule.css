@@ -172,7 +172,7 @@ div.addthis_toolbox {
     width:250px;
 }
 .verticalpadding {
-  padding: 2.5% 0%;
+  padding: 1.5% 0%;
 }
 
 .accordion {
@@ -200,4 +200,8 @@ div.addthis_toolbox {
 }
 .gitforks {
   color:green;
+}
+
+.brand {
+  color: white;
 }

@@ -25,7 +25,6 @@ var authenticate = function(request, response) {
 // home page
 ///////////////////////////////////////////////////////////////////////////////
 var indexfn = function(request, response) {
-
     authenticate(request, response);
 
     response.render("homepage", {
@@ -114,7 +113,6 @@ var tasksfn = function(request, response) {
 // rally
 ///////////////////////////////////////////////////////////////////////////////
 var rallyfn = function(request, response) {
-
     authenticate(request, response);
 
     response.render("rallypage", {
@@ -128,8 +126,10 @@ var rallyfn = function(request, response) {
 // github
 ///////////////////////////////////////////////////////////////////////////////
 var githubfn = function(request, response) {
-
     authenticate(request, response);
+    if (!request.loggedIn) {
+      response.redirect("/login");
+    } 
 
     response.render("githubpage", {
       title: Constants.PRODUCT_NAME,
