@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+
+  <head>
+    <title><%= title %></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+    <meta name="description" content=<%= product_desc %>>
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.1.5/angular.min.js" ></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui/0.4.0/angular-ui.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min.js"></script>
+    <script src="http://crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/aes.js"></script>
+    <script src="js/xeditable.min.js"></script>
+
+    <script src="js/main.js"></script>
+    <script src="js/services.js"></script>
+    <script src="js/filters.js"></script>
+    <script src="js/controllers.js"></script>
+
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/3.0.2/css/font-awesome.css">
+    <link rel="stylesheet" href="css/taskcule.css">
+    <link rel="stylesheet" href="css/xeditable.css">
+  </head>
+
+  <body>
+
+    <!-- navigation -->
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="home"><%= product_name %></a>
+        </div>
+        <div class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="home">Home</a></li>
+            <li><a href="tasks">Tasks</a></li>
+            <li><a href="rally">Rally</a></li>
+            <li class="active"><a href="github">GitHub</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+
+    <!-- GitHub controller -->
+    <div ng-controller="GithubCtrl" class="container-fluid">
+
+        <div class="row-fluid heading">
+                <h1>GitHub</h1>
+                <br>
+        </div>
+
+        <div ng-if="error">
+            {{error}}
+        </div>
+
+        <!-- accordion to display github activity -->
+        <!-- differentiate between commits, issues, forks, etc -->
+        <div ng-if="!error" ng-init="getGithubActivities('<%=user.login%>' , 
+            '<%=user.token%>' )">
+
+          <!-- loop thro each activity and display by type.  the json structure
+                is different for each type, so can't generalize the display 
+                format
+          -->  
+          <div class="row-fluid accordion">
+              <div ng-model="activities" ng-repeat="activity in activities">
+                <div class="accordion" id="accordion2">
+                <div class="accordion-group">
+                  <div class="accordion-heading">
+
+                    <a class="accordion-toggle" data-toggle="collapse"
+                       data-parent="#accordion2" href="#{{activity.id}}">
+                      
+                      <!-- commits -->
+                      <span ng-if="activity.type=='PushEvent'" class="animate-if">
+                        <span ng-if="activity.payload.commits.length == 1">
+                          <i>{{activity.repo.name}}</i>: {{activity.payload.commits.0.message}}
+                        </span>
+                        <span ng-if="activity.payload.commits.length > 1">
+                          <i>{{activity.repo.name}}</i>: 
+                           <li class="lineitem" ng-repeat=" commit in activity.payload.commits">{{commit.message}}</li>
+                        </span>
+                      </span>
+                      
+                      <!-- forks -->
+                      <span ng-if="activity.type=='ForkEvent'" class="gitforks animate-if">
+                          Forked {{activity.repo.name}}
+                      </span>
+
+                      <!-- issues -->
+                      <span ng-if="activity.type=='IssuesEvent'" class="gitissues animate-if">
+                          <i>{{activity.repo.name}}</i>: Bug-{{activity.payload.issue.title}}
+                      </span>
+
+                      <!-- create event -->
+                      <span ng-if="activity.type=='CreateEvent'" class="animate-if">
+                          <i>{{activity.repo.name}}</i>: Creating {{activity.payload.ref}} {{activity.payload.ref_type}}<br>
+                          {{activity.payload.description}}
+                      </span>
+                    </a>
+
+                  </div>
+                  <div id="{{activity.id}}" class="accordion-body collapse">
+                    <div class="accordion-inner">
+                      
+                      <!-- commits -->
+                      <span ng-if="activity.type=='PushEvent'" class="animate-if">
+                        Repository: {{activity.payload.ref}}<br>
+                        Size of commit: {{activity.payload.size}}<br>
+                        Commited by: {{activity.actor.login}}<br>
+                        <li class="lineitem" ng-repeat="commit in activity.payload.commits">URL: <a href="{{commit.url}}">{{commit.url}}</a></li>
+                        </span>
+                      </span>
+
+                      <!-- forks -->
+                      <span ng-if="activity.type=='ForkEvent'" class="animate-if">
+                          Description: {{activity.payload.forkee.description}}<br>
+                          Forked by: {{activity.actor.login}}<br>
+                          Fork created on: {{activity.created_at}}<br>
+                          URL: <a href="{{activity.repo.url}}">{{activity.repo.url}}</a><br>
+                      </span>
+
+                      <!-- issues -->
+                      <span ng-if="activity.type=='IssuesEvent'" class="animate-if">
+                          Action: {{activity.payload.action}}<br>
+                          State: {{activity.payload.issue.state}}<br>
+                          Notes: {{activity.payload.issue.body}}<br>
+                          Issue created by: {{activity.actor.login}}<br>
+                          Issue created on: {{activity.created_at}}<br>
+                      </span>
+
+                      <!-- create event -->
+                      <span ng-if="activity.type=='CreateEvent'" class="animate-if">
+                          Issue created by: {{activity.actor.login}}<br>
+                          Issue created on: {{activity.created_at}}<br>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                </div>
+              </div>
+          </div>
+        </div>
+
+    </div>
+
+</body>
+
+</html>

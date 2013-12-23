@@ -408,5 +408,35 @@ angular.module('myApp.controllers',[]).
 
     }
 
+}]).
+
+  //////////////////////////////////////////////////////////////////////////////
+  // Controller for GitHub activity page
+  //////////////////////////////////////////////////////////////////////////////
+  controller('GithubCtrl', ['$http', '$scope', '$filter',  
+    function($http, $scope, $filter) {
+
+    ////////////////////////////////////////////////////////////////////////////
+    // get github activities (public and private)
+    ////////////////////////////////////////////////////////////////////////////
+    $scope.getGithubActivities = function(user, token) {
+
+      var cfg = {
+        headers: {
+          Authorization: 'token ' + token
+        }
+      }
+
+      var url = "https://api.github.com/users/" + user + "/events";
+
+      $http.get(url, cfg).success(function(data, status, headers, config) {
+        $scope.activities = data;
+      }).error(function(data, status, headers, config) {
+        $scope.error = "Error fetching GitHub activities (status:" + status + ")";
+      });
+
+    }
+
+
 }]);
 

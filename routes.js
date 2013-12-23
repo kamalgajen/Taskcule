@@ -37,6 +37,7 @@ var indexfn = function(request, response) {
       ga_domain: Constants.GOOGLE_ANALYTICS_DOMAIN,
       ga_tracking_id: Constants.GOOGLE_ANALYTICS_TRACKING_ID
     });
+
 };
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -50,6 +51,15 @@ var loginfn = function(request, response) {
       product_short_desc: Constants.PRODUCT_SHORT_DESCRIPTION
     });
 };
+
+///////////////////////////////////////////////////////////////////////////////
+// logout 
+///////////////////////////////////////////////////////////////////////////////
+var logoutfn = function(request, response) {
+    if (!request.loggedIn) {
+      request.logout();
+    }
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 // fetches the tasks for a user.  Interacts with the task model
@@ -87,13 +97,11 @@ var api_post_tasksfn = function(request, response) {
 
 ///////////////////////////////////////////////////////////////////////////////
 // generate a angular generated task page.  Html source is in views/taskpage.ejs
-// and TaskCtrl handles various requests.  models/task is the model that interacts
-// with hbase backend
+// and TaskCtrl handles various requests.  models/task is the model that 
+// interacts with hbase backend
 ///////////////////////////////////////////////////////////////////////////////
 var tasksfn = function(request, response) {
     authenticate(request, response);
-
-    console.log ("inside taskfn in router");
 
     response.render("taskpage", {
       title: Constants.PRODUCT_NAME,
@@ -110,6 +118,20 @@ var rallyfn = function(request, response) {
     authenticate(request, response);
 
     response.render("rallypage", {
+      title: Constants.PRODUCT_NAME,
+      product_desc: Constants.PRODUCT_DESCRIPTION,
+      product_name: Constants.PRODUCT_NAME
+    });
+};
+
+///////////////////////////////////////////////////////////////////////////////
+// github
+///////////////////////////////////////////////////////////////////////////////
+var githubfn = function(request, response) {
+
+    authenticate(request, response);
+
+    response.render("githubpage", {
       title: Constants.PRODUCT_NAME,
       product_desc: Constants.PRODUCT_DESCRIPTION,
       product_name: Constants.PRODUCT_NAME
@@ -194,8 +216,10 @@ var GETROUTES = define_routes({
     '/login': loginfn,
     '/tasks': tasksfn,
     '/rally': rallyfn,
+    '/github': githubfn,
     '/api/tasks': api_get_tasksfn,
-    '/api/rally/user' : api_get_rallyuserfn   
+    '/api/rally/user' : api_get_rallyuserfn,
+    '/logout' : logoutfn
 });
 
 var POSTROUTES = define_routes({

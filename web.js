@@ -37,7 +37,9 @@ function addUser (source, sourceUser) {
   user = usersById[sourceUser.id] = {
     id: sourceUser.id, 
     name: sourceUser.name,
-    email: sourceUser.email
+    email: sourceUser.email,
+    login: sourceUser.login,
+    token: sourceUser.token
   };
   user[source] = sourceUser;
   return user;
@@ -80,13 +82,14 @@ everyauth.github
   .handleAuthCallbackError( function (req, res) {
     res.redirect('/login');
   })
-  .findOrCreateUser( function (sess, accessToken, accessTokenExtra, githubUser) {
+  .findOrCreateUser( function (session, accessToken, accessTokenExtra, githubUser) {
       console.log("Github authentication successful");
-      //console.log(sess, accessToken, accessTokenExtra, githubUser);
+      // console.log(accessToken, accessTokenExtra, githubUser);
       // the git user is null in some/all? cases, even though I am request access
       // to the email address.  So, creating a unique email, since this is the 
       // key in our data store
       githubUser.email = githubUser.login + "_github";
+      githubUser.token = accessToken;
       return usersByGithubId[githubUser.id] || (usersByGithubId[githubUser.id] = addUser('github', githubUser));
   })
   .redirectPath('/home');

@@ -152,6 +152,11 @@ ul.lineitem {
   padding: 2% 0%;
 }
 
+li.lineitem {
+  list-style-type: none;
+  margin: auto;
+}
+
 /* http://support.addthis.com/customer/portal/questions/1136093-share-buttons-in-center-position */      
 div.addthis_toolbox {
   width: 210px;
@@ -170,3 +175,29 @@ div.addthis_toolbox {
   padding: 2.5% 0%;
 }
 
+.accordion {
+  margin: 3px;
+}
+
+.accordion-group {
+  margin-bottom: none;
+  border: 1px solid #e5e5e5;
+}
+
+.accordion-heading .accordion-toggle {
+  display: block;
+  padding: 2px 6px;
+  text-decoration:none;
+  /*background-color:#e52b27;*/
+}
+
+.accordion-inner {
+    padding: 2px 6px;
+}
+
+.gitissues {
+  color:red;
+}
+.gitforks {
+  color:green;
+}
