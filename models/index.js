@@ -4,18 +4,7 @@ var Constants = require('../constants');
 // Constants.js
 if (!global.hasOwnProperty('hbase')) {
 
-   var thrift = require('thrift'),
-    HBase = require('../public/js/gen-nodejs/Hbase.js'),
-    HBaseTypes = require('../public/js/gen-nodejs/Hbase_types.js'),
-
-    connection = thrift.createConnection(Constants.HBASE_THRIFT_SERVER_NAME, 
-                                            Constants.HBASE_THRIFT_SERVER_PORT, {
-        transport: thrift.TBufferedTransport,
-        protocol: thrift.TBinaryProtocol
-    });
-
-    global.hbase = thrift.createClient(HBase,connection);
-
+global.hbase = "";
 }
 
 module.exports = global.hbase;

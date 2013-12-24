@@ -2,6 +2,7 @@ var uu      = require('underscore')
   , db      = require('./models')
   , taskmodel = require('./models/task')
   , rallymodel = require('./models/rally')
+  , bugzillamodel = require('./models/bugzilla')
   , Constants = require('./constants');
 
 /*
@@ -139,6 +140,33 @@ var githubfn = function(request, response) {
 };
 
 ///////////////////////////////////////////////////////////////////////////////
+// bugzilla
+///////////////////////////////////////////////////////////////////////////////
+
+var bugzillafn = function(request, response) {
+    //authenticate(request, response);
+
+    response.render("bugzillapage", {
+      title: Constants.PRODUCT_NAME,
+      product_desc: Constants.PRODUCT_DESCRIPTION,
+      product_name: Constants.PRODUCT_NAME
+    });
+};
+
+var bugzillaloginfn = function(request, response) {
+    var loginUserName = request.body.username;
+    var loginPassword = request.body.password;
+    
+    var successcb = function(data) {
+      response.json(data);
+    };
+    var errcb = errfn('error loging user in', response);
+    
+    bugzillamodel.login(loginUserName, loginPassword, successcb, errcb);
+};
+
+
+///////////////////////////////////////////////////////////////////////////////
 // DEPRECATED: fetch rally user from hbase data store
 ///////////////////////////////////////////////////////////////////////////////
 var api_get_rallyuserfn = function(request, response) {
@@ -219,12 +247,14 @@ var GETROUTES = define_routes({
     '/github': githubfn,
     '/api/tasks': api_get_tasksfn,
     '/api/rally/user' : api_get_rallyuserfn,
-    '/logout' : logoutfn
+    '/logout' : logoutfn,
+    '/bugzilla' : bugzillafn
 });
 
 var POSTROUTES = define_routes({
     '/api/tasks' : api_post_tasksfn,
-    '/api/rally/user' : api_post_rallyuserfn
+    '/api/rally/user' : api_post_rallyuserfn,
+    '/bugzilla/login' : bugzillaloginfn
 });
 
 var DELETEROUTES = define_routes({

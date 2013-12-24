@@ -438,5 +438,30 @@ angular.module('myApp.controllers',[]).
     }
 
 
+}]).
+  
+  //////////////////////////////////////////////////////////////////////////////
+  // Controller for Bugzilla page
+  //////////////////////////////////////////////////////////////////////////////
+  
+  controller('BugzillaLoginCtrl', ['$http', '$scope', '$route',  
+    function($http, $scope, $route) {
+    $scope.bugzillaLoggedIn = false;
+    
+    // Function to take in username and password and try and login the user to Bugzilla.
+    // We pass the username and password to the server (to get around same origin policy),
+    // where the Bugzilla login form is called and the login cookie is returned to client to store
+    $scope.saveBugzillaLogin = function(bugzillauser, bugzillapwd) {
+      
+      $http.post('/bugzilla/login', {username:bugzillauser, password:bugzillapwd}).success(function(data, status, headers, config) {
+        console.log(data);
+        var cookieString = data.cookieString;
+        $scope.bugzillaLoggedIn = true;
+      }).error(function(data, status, headers, config) {
+        $scope.error = "Error loging into bugzilla";
+      });
+      
+    };
 }]);
+
 
