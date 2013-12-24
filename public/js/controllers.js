@@ -446,22 +446,76 @@ angular.module('myApp.controllers',[]).
   
   controller('BugzillaLoginCtrl', ['$http', '$scope', '$route',  
     function($http, $scope, $route) {
-    $scope.bugzillaLoggedIn = false;
+    $scope.validaccount = true;
+    
+    // Get the bugzilla related cookies. If we find them, go ahead and get the bug list
+    // if not, we show the login form
+    var bugzillaCookie = getCookie('bugzillaCookie');
+    var bugzillaUsername = getCookie('bugzillaUsername');
+    var bugzillaUrl = getCookie('bugzillaUrl');
+    
+    if (!bugzillaCookie || !bugzillaUsername || !bugzillaUrl){
+      $scope.bugzillaLoggedIn = false;
+    }
+    else{
+      $scope.bugzillaLoggedIn = true;
+      getBugList(bugzillaUsername, bugzillaCookie, bugzillaUrl);
+    }
+    
+    // Function to delete existing saved credentials and show login form again.
+    // Does this by setting the bugzilla cookies to a past date
+    $scope.changeBugzillaLogin = function(){
+      document.cookie = "bugzillaCookie=; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+      document.cookie = "bugzillaUsername=; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+      document.cookie = "bugzillaUrl=; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+     
+      $scope.bugzillaLoggedIn = false;
+    }
     
     // Function to take in username and password and try and login the user to Bugzilla.
     // We pass the username and password to the server (to get around same origin policy),
     // where the Bugzilla login form is called and the login cookie is returned to client to store
-    $scope.saveBugzillaLogin = function(bugzillauser, bugzillapwd) {
-      
-      $http.post('/bugzilla/login', {username:bugzillauser, password:bugzillapwd}).success(function(data, status, headers, config) {
-        console.log(data);
-        var cookieString = data.cookieString;
-        $scope.bugzillaLoggedIn = true;
+    $scope.saveBugzillaLogin = function(bugzillaUser, bugzillaPwd, bugzillaUrl) {
+      $http.post('/bugzilla/login', {username:bugzillaUser, password:bugzillaPwd, url:bugzillaUrl}).success(function(data, status, headers, config) {
+        console.log("Logged in handler, the server returned the following data: " + JSON.stringify(data));
+        if (data.isError){
+          $scope.validaccount = false;
+          return;
+        }
+
+        var bugzillaCookie = data.cookieString;
+        getBugList(bugzillaUser, bugzillaCookie, bugzillaUrl);
+
       }).error(function(data, status, headers, config) {
+        console.log('got into the error message');
         $scope.error = "Error loging into bugzilla";
       });
       
     };
+    
+    // Function to get the list of bugs for a given username and bugzilla cookie
+    function getBugList(bugzillaUser, bugzillaCookie, bugzillaUrl){
+      $http.get('/bugzilla/buglist?user=' + bugzillaUser + '&cookiestring=' + bugzillaCookie +'&url=' + bugzillaUrl).success(function(data, status, headers, config) {
+        console.log("Get bug list handler, the server returned the following data: " + JSON.stringify(data));
+        $scope.bugzillaLoggedIn = true;
+        $scope.buglist = data;
+      }).error(function(data, status, headers, config) {
+        $scope.error = "Error getting bug list";
+      });
+    }
+    
+    // Function to get the cookie of given name
+    // Modified from http://www.w3schools.com/js/js_cookies.asp
+    function getCookie(cname){
+      var name = cname + "=";
+      var allCookies = document.cookie.split(';');
+      for(var i=0; i<allCookies.length; i++) 
+        {
+        var cookie = allCookies[i].trim();
+        if (cookie.indexOf(name)==0) return cookie.substring(name.length, cookie.length);
+        }
+      return null;
+    }
 }]);
 
 

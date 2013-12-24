@@ -156,14 +156,37 @@ var bugzillafn = function(request, response) {
 var bugzillaloginfn = function(request, response) {
     var loginUserName = request.body.username;
     var loginPassword = request.body.password;
+    var url = request.body.url;
+    
+    var successcb = function(data) {
+      response.cookie('bugzillaCookie', data.cookieString, { maxAge: 900000});
+      response.cookie('bugzillaUsername', loginUserName, { maxAge: 900000});
+      response.cookie('bugzillaUrl', url, { maxAge: 900000});
+      response.json(data);
+    };
+    
+    var errcb = function(data) {
+      response.json(data);
+    };
+    
+    bugzillamodel.login(loginUserName, loginPassword, successcb, errcb);
+};
+
+var bugzillabuglistfn = function(request, response) {
+    var username = request.query.user;
+    var cookieString = request.query.cookiestring;
+    var url = request.query.url;
     
     var successcb = function(data) {
       response.json(data);
     };
-    var errcb = errfn('error loging user in', response);
+
+    var errcb = function(data) {
+      response.json(data);
+    };
     
-    bugzillamodel.login(loginUserName, loginPassword, successcb, errcb);
-};
+    bugzillamodel.getBugList(username, cookieString, url, successcb, errcb);
+}
 
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -248,7 +271,8 @@ var GETROUTES = define_routes({
     '/api/tasks': api_get_tasksfn,
     '/api/rally/user' : api_get_rallyuserfn,
     '/logout' : logoutfn,
-    '/bugzilla' : bugzillafn
+    '/bugzilla' : bugzillafn,
+    '/bugzilla/buglist' : bugzillabuglistfn
 });
 
 var POSTROUTES = define_routes({

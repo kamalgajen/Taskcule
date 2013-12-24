@@ -62,22 +62,29 @@
                 ng-show="bugzillaLoggedIn" >
             <button name='btnactive' type="submit" 
                 class="btn btn-primary icon-small"
-                ng-click="requestRallyLogin=true;">
+                ng-click="changeBugzillaLogin();">
                 Change Bugzilla Account Details
             </button>
         </div>
         <div class="row-fluid" ng-show="!bugzillaLoggedIn">
             <div class="col-md-1"></div>
-            <input type="email" class="col-md-3 col-xs-12"
-                name="rallyuser" ng-model="bugzillauser"
-                placeholder="Enter your bugzilla user name"
+            <input type="email" class="col-md-2 col-xs-12"
+                name="bugzillauser" ng-model="bugzillauser"
+                placeholder="Enter user name"
                 autofocus required
             >
 
             <div class="col-md-1"></div>
-            <input type="password" class="col-md-3 col-xs-12"
-                name="rallypwd" ng-model="bugzillapwd"
-                placeholder="Enter your bugzilla password"
+            <input type="password" class="col-md-2 col-xs-12"
+                name="bugzillapwd" ng-model="bugzillapwd"
+                placeholder="Enter password"
+                required
+            >
+              
+            <div class="col-md-1"></div>
+            <input type="text" class="col-md-2 col-xs-12"
+                name="bugzillaurl" ng-model="bugzillaurl"
+                placeholder="Enter URL"
                 required
             >
 
@@ -86,7 +93,7 @@
                 <button name='btnactive' type="submit" 
                     class="btn btn-primary icon-small"
                     ng-disabled="false"
-                    ng-click="validaccount=true; saveBugzillaLogin(bugzillauser, bugzillapwd);">
+                    ng-click="validaccount=true; saveBugzillaLogin(bugzillauser, bugzillapwd, bugzillaurl);">
                     Register Bugzilla user with <%= product_name %>
                 </button>
             </div>
@@ -99,6 +106,29 @@
         </div>
         </form>
         <br>
+
+        <table border="1" ng-show="bugzillaLoggedIn">
+            <tr>
+                <td><b>Bug Num</b></td>
+                <td><b>Severity</b></td>
+                <td><b>Priority</b></td>
+                <td><b>OS</b></td>
+                <td><b>Assignee</b></td>
+                <td><b>Status</b></td>
+                <td><b>Resolution</b></td>
+                <td><b>Summary</b></td>
+            </tr>
+            <tr ng-repeat="bug in buglist">    
+                <td>{{ bug.BUG_NUM }}</td>
+                <td>{{ bug.BUG_SEVERITY }}</td>
+                <td>{{ bug.BUG_PRIORITY }}</td>
+                <td>{{ bug.BUG_OS }}</td>
+                <td>{{ bug.BUG_ASSIGNEE }}</td>
+                <td>{{ bug.BUG_STATUS }}</td>
+                <td>{{ bug.BUG_RESOLUTION }}</td>
+                <td>{{ bug.BUG_SUMMARY }}</td>
+            </tr>
+        </table>
     </div>
 </body>
 
