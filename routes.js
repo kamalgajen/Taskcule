@@ -2,6 +2,7 @@ var uu      = require('underscore')
   , db      = require('./models')
   , taskmodel = require('./models/task')
   , rallymodel = require('./models/rally')
+  , bugzillamodel = require('./models/bugzilla')
   , Constants = require('./constants');
 
 /*
@@ -139,6 +140,56 @@ var githubfn = function(request, response) {
 };
 
 ///////////////////////////////////////////////////////////////////////////////
+// bugzilla
+///////////////////////////////////////////////////////////////////////////////
+
+var bugzillafn = function(request, response) {
+    //authenticate(request, response);
+
+    response.render("bugzillapage", {
+      title: Constants.PRODUCT_NAME,
+      product_desc: Constants.PRODUCT_DESCRIPTION,
+      product_name: Constants.PRODUCT_NAME
+    });
+};
+
+var bugzillaloginfn = function(request, response) {
+    var loginUserName = request.body.username;
+    var loginPassword = request.body.password;
+    var url = request.body.url;
+    
+    var successcb = function(data) {
+      response.cookie('bugzillaCookie', data.cookieString, { maxAge: 900000});
+      response.cookie('bugzillaUsername', loginUserName, { maxAge: 900000});
+      response.cookie('bugzillaUrl', url, { maxAge: 900000});
+      response.json(data);
+    };
+    
+    var errcb = function(data) {
+      response.json(data);
+    };
+    
+    bugzillamodel.login(loginUserName, loginPassword, successcb, errcb);
+};
+
+var bugzillabuglistfn = function(request, response) {
+    var username = request.query.user;
+    var cookieString = request.query.cookiestring;
+    var url = request.query.url;
+    
+    var successcb = function(data) {
+      response.json(data);
+    };
+
+    var errcb = function(data) {
+      response.json(data);
+    };
+    
+    bugzillamodel.getBugList(username, cookieString, url, successcb, errcb);
+}
+
+
+///////////////////////////////////////////////////////////////////////////////
 // DEPRECATED: fetch rally user from hbase data store
 ///////////////////////////////////////////////////////////////////////////////
 var api_get_rallyuserfn = function(request, response) {
@@ -219,12 +270,15 @@ var GETROUTES = define_routes({
     '/github': githubfn,
     '/api/tasks': api_get_tasksfn,
     '/api/rally/user' : api_get_rallyuserfn,
-    '/logout' : logoutfn
+    '/logout' : logoutfn,
+    '/bugzilla' : bugzillafn,
+    '/bugzilla/buglist' : bugzillabuglistfn
 });
 
 var POSTROUTES = define_routes({
     '/api/tasks' : api_post_tasksfn,
-    '/api/rally/user' : api_post_rallyuserfn
+    '/api/rally/user' : api_post_rallyuserfn,
+    '/bugzilla/login' : bugzillaloginfn
 });
 
 var DELETEROUTES = define_routes({
